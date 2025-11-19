@@ -29,21 +29,31 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|max:20',
             'budget' => 'nullable|integer',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-        ]);
+        ];
+
+        // repeat_type が "none" の場合は date を必須
+        if ($request->repeat_type === 'none') {
+            $rules['date'] = 'required|date';
+        } else {
+            $rules['date'] = 'nullable|date';
+        }
+
+        $validated = $request->validate($rules);
+
         $task = Task::create([
-             ...$validated,
+            ...$validated,
             'description' => $request->description,
-            'date' => $request->date,
             'repeat_type' => $request->repeat_type,
-            'day_of_week' => is_array($request->day_of_week)? implode(',', $request->day_of_week): $request->day_of_week,
+            'day_of_week' => is_array($request->day_of_week)
+                ? implode(',', $request->day_of_week)
+                : $request->day_of_week,
         ]);
 
-         // Ajax (JSON) リクエストなら JSON を返す
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json($task, 201, [], JSON_UNESCAPED_UNICODE);
         }
@@ -51,6 +61,7 @@ class TaskController extends Controller
         $request->session()->flash('message', '保存しました');
         return redirect()->route('task.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -73,26 +84,38 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|max:20',
             'budget' => 'nullable|integer',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-        ]);
-        $task->update([
-             ...$validated,
-            'description' => $request->description,
-            'date' => $request->date,
-            'repeat_type' => $request->repeat_type,
-            'day_of_week' => is_array($request->day_of_week)? implode(',', $request->day_of_week): $request->day_of_week,
+        ];
 
+        if ($request->repeat_type === 'none') {
+            $rules['date'] = 'required|date';
+        } else {
+            $rules['date'] = 'nullable|date';
+        }
+
+        $validated = $request->validate($rules);
+
+        $task->update([
+            ...$validated,
+            'description' => $request->description,
+            'repeat_type' => $request->repeat_type,
+            'day_of_week' => $request->has('day_of_week')
+                ? (is_array($request->day_of_week)
+                    ? implode(',', $request->day_of_week)
+                    : $request->day_of_week)
+                : null,
         ]);
-         // Ajax (JSON) リクエストなら JSON を返す
+
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json($task, 200, [], JSON_UNESCAPED_UNICODE);
         }
+
         $request->session()->flash('message', '更新しました');
-         return redirect()->route('calendar.index') ;
+        return redirect()->route('calendar.index');
     }
 
     /**
