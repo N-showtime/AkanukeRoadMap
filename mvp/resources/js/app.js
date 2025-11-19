@@ -1,33 +1,15 @@
-// import './bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import './bootstrap';
 
-import { Calendar } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+// TailwindCSS は Vite プラグインで読み込まれるので何もしなくてOK
 
-document.addEventListener('DOMContentLoaded', function () {
-    const calendarEl = document.getElementById('calendar');
-    const eventsUrl = calendarEl.dataset.eventsUrl; // Bladeから渡されたURLを取得
+// Alpine.js（CDNではなくローカルで管理したい場合）
+import Alpine from 'alpinejs';
+window.Alpine = Alpine;
+Alpine.start();
 
-   // カレンダー初期化
-    const calendar = new Calendar(calendarEl, {
-        plugins: [dayGridPlugin, interactionPlugin],
-        initialView: 'dayGridMonth',
-        locale: 'ja',
-        events: '/task/events',
-        eventClick: function (info) {
-            const taskId = info.event.id; // ← イベントデータのidを取得
-            if (taskId) {
-                window.location.href = `/task/${taskId}`;
-            }
-        },
-    });
+// Flatpickr（JSのみ、CSSはapp.cssで管理する）
+import flatpickr from "flatpickr";
+window.flatpickr = flatpickr;
 
-    // 他ファイルやフォームからも呼べるように
-    window.calendar = calendar;
-
-    calendar.render();
-});
-
-
-
+// Livewire（必要なら）
+// import 'livewire-turbolinks';

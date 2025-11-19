@@ -5,5 +5,6 @@
     </div>
 
     {{-- JSをVite経由で読み込む --}}
-    @vite(['resources/js/app.js'])
+   @vite(['resources/css/app.css', 'resources/js/calendar.js'])
+
 </x-layouts.app>

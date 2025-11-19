@@ -69,9 +69,9 @@
     </div>
 </x-layouts.app>
 
-@vite(['resources/js/app.js'])
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+{{-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script> --}}
 
 <script>
 function taskForm() {
