@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         plugins: [dayGridPlugin, interactionPlugin],
         initialView: 'dayGridMonth',
         locale: 'ja',
-        events: '/task/events',
+        events: eventsUrl,
         eventClick: function (info) {
             const taskId = info.event.id; // ← イベントデータのidを取得
             if (taskId) {

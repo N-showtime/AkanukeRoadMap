@@ -59,7 +59,7 @@
             </div>
 
             {{-- 開始日・終了日（繰り返しありの場合のみ表示） --}}
-            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6" x-show="repeatType === 'daily' || repeatType === 'weekly' ">
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6" x-show="repeatType !== ''">
                 <div>
                     <label for="start_date" class="font-semibold">開始日</label>
                     <input type="text" x-ref="startDate" name="start_date" class="w-full p-2 border rounded-md" id="start_date">
@@ -73,7 +73,7 @@
             {{-- 毎月用オプション --}}
             <div class="mt-4" x-show="repeatType === 'monthly'">
                 <label class="font-semibold block mb-2">毎月の繰り返し方法</label>
-                <select x-model="monthlyType" class="w-full p-2 border rounded-md">
+                <select name="monthly_type" x-model="monthlyType" class="w-full p-2 border rounded-md">
                     <option value="date">日付指定</option>
                     <option value="weekday">曜日指定</option>
                 </select>
