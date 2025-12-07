@@ -26,9 +26,9 @@ services:
     pgadmin4:
         image: dpage/pgadmin4
         ports:
-            - 8888:80
+            - '8888:80'
         volumes:
-            - pgadmin4_data:/var/lib/pgadmin
+            - 'pgadmin4_data:/var/lib/pgadmin'
         environment:
             PGADMIN_DEFAULT_EMAIL: '${PGADMIN_EMAIL}'
             PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_PASSWORD}'
